@@ -15,4 +15,7 @@ router.put('/videos/:id', uploads.array('video_files'), videoController.updateVi
 // Route untuk menghapus video dan file terkait
 router.delete('/videos/:id', videoController.deleteVideo);
 
+router.get('/videos/:id', videoController.getVideoById); // Menambahkan route untuk mendapatkan video by ID
+
+
 module.exports = router;

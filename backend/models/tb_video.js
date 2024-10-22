@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     harga_video: {
-      type: DataTypes.STRING,
+      type: DataTypes.DECIMAL,
       allowNull: true
     }
   }, {

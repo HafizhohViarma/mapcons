@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./models'); 
+const path = require('path'); 
+
 
 const app = express();
 
@@ -11,6 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Middleware CORS (untuk mengizinkan akses dari domain yang berbeda)
 app.use(cors());
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Simple route untuk tes
 app.get('/', (req, res) => {

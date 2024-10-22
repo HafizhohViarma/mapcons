@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Users } = require('../models'); // Sesuaikan dengan path model Anda
+const upload = require('../config/uploadconfig.js'); // Mengimpor konfigurasi multer
 
 // Secret key untuk JWT
 const SECRET_KEY = 'your_secret_key'; // Ganti dengan secret key yang lebih kuat
 
-// Pendaftaran pengguna
+// Pendaftaran pengguna dengan upload foto profil
 exports.register = async (req, res) => {
     try {
         const { nama, email, telp, password, level } = req.body;
@@ -13,11 +14,13 @@ exports.register = async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Simpan user baru, termasuk path profil jika ada file yang diupload
         const user = await Users.create({
             nama,
             email,
             telp,
             password: hashedPassword,
+            profil: req.file ? `/uploads/profil/${req.file.filename}` : null, // Path foto profil
             level
         });
 
@@ -52,7 +55,6 @@ exports.login = async (req, res) => {
     }
 };
 
-
 // Middleware untuk autentikasi
 exports.authenticate = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -82,7 +84,27 @@ exports.authenticate = (req, res, next) => {
     });
 };
 
-// ambil semua users
+// Update foto profil pengguna (admin atau user)
+exports.updateProfile = async (req, res) => {
+    try {
+        const { id } = req.params; // Mengambil ID pengguna dari parameter
+
+        const user = await Users.findOne({ where: { id_user: id } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update profil dengan foto baru
+        user.profil = req.file ? `/uploads/profil/${req.file.filename}` : user.profil;
+        await user.save();
+
+        res.json({ message: 'Profile updated successfully', user });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Mengambil semua pengguna
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await Users.findAll({
@@ -94,7 +116,7 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-// hapus 
+// Menghapus pengguna
 exports.deleteUser = async (req, res) => {
     try {
         const { id } = req.params; // Mengambil ID pengguna dari parameter
@@ -110,4 +132,3 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
