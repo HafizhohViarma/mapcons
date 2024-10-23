@@ -1,9 +1,11 @@
+const { v4: uuidv4 } = require('uuid');
 module.exports = (sequelize, DataTypes) => {
     const Users = sequelize.define('Users', {
       id_user: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        defaultValue: () => uuidv4(),
       },
       nama: {
         type: DataTypes.STRING,
