@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      profil: {
+      sampul: {
         type: DataTypes.STRING,
         allowNull: true
       },
