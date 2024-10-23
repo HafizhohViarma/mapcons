@@ -1,9 +1,12 @@
+const { v4: uuidv4 } = require('uuid');
 module.exports = (sequelize, DataTypes) => {
+
     const Kelas = sequelize.define('tb_Kelas', {
       id_kelas: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        defaultValue: () => uuidv4(),
       },
       sampul_kelas: {
         type: DataTypes.STRING,
