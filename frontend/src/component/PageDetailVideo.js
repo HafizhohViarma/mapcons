@@ -34,7 +34,7 @@ const PageDetailVideo = () => {
                     <Link to="/video">
                         <button className="button is-warning">Kembali</button>
                     </Link>
-                    <Link to="">
+                    <Link to="/add-videos">
                         <button className="button is-primary ml-3">Tambah Video</button>
                     </Link>
                 </div>
